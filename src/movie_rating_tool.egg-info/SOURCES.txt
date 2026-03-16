@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/movie_rating_tool/__init__.py
+src/movie_rating_tool/__main__.py
+src/movie_rating_tool/cli.py
+src/movie_rating_tool.egg-info/PKG-INFO
+src/movie_rating_tool.egg-info/SOURCES.txt
+src/movie_rating_tool.egg-info/dependency_links.txt
+src/movie_rating_tool.egg-info/requires.txt
+src/movie_rating_tool.egg-info/top_level.txt

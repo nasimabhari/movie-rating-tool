@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: movie-rating-tool
+Version: 0.1.0
+Summary: A movie rating tool with personal ratings, online comparison, stats and visualizations
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+
+# Movie Rating Tool
+
+A simple Python package to manage your personal movie ratings, compare them with online ratings, see statistics and beautiful charts.
+
+## Installation
+```bash
+git clone https://github.com/nasimabhari/movie-rating-tool.git
+cd movie-rating-tool
+uv pip install -e .
+uv run -m movie_rating_tool
