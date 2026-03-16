@@ -1,36 +1,36 @@
 """
 CLI module for the Movie Rating Tool.
-Demonstrates functions, control flow, and all required data structures.
+Now using persistent storage via data_loader.
 """
 
+from .data_loader import load_ratings, save_ratings
+
 # Data structures
-SAMPLE_MOVIES: list[str] = [
+SAMPLE_MOVIES = [
     "The Dark Knight",
     "Inception",
     "Interstellar",
     "The Matrix"
 ]  # list
 
-FAVORITE_GENRES: set[str] = {"Action", "Sci-Fi", "Drama"}  # set
+FAVORITE_GENRES = {"Action", "Sci-Fi", "Drama"}  # set
 
-MOVIE_DETAILS: dict[str, tuple[float, str]] = {
+MOVIE_DETAILS = {
     "The Dark Knight": (9.0, "Action, Crime"),
     "Inception": (8.8, "Action, Sci-Fi"),
     "Interstellar": (8.7, "Adventure, Drama, Sci-Fi"),
     "The Matrix": (8.7, "Action, Sci-Fi")
-}  # dictionary with tuples inside
+}  # dict of tuples
 
 
-def show_welcome() -> None:
-    """Print welcome message."""
+def show_welcome():
     print("\n" + "="*50)
     print("🎬 Welcome to Movie Rating Tool v0.1.0")
     print("="*50)
-    print("This tool lets you rate movies and compare with online ratings.\n")
+    print("Your ratings are now saved automatically!\n")
 
 
-def show_menu() -> None:
-    """Display the main menu."""
+def show_menu():
     print("\nWhat would you like to do?")
     print("1. Show sample movies (demo data structures)")
     print("2. Add your own rating")
@@ -38,22 +38,24 @@ def show_menu() -> None:
     print("4. Exit")
 
 
-def show_sample_movies() -> None:
-    """Demonstrate list, set, dict and tuple."""
+def show_sample_movies():
     print("\n📋 Sample Movies (list):")
-    for movie in SAMPLE_MOVIES:          # for loop
+    for movie in SAMPLE_MOVIES:
         print(f"  • {movie}")
 
     print("\n❤️  Favorite Genres (set):", FAVORITE_GENRES)
 
     print("\n📊 Movie Details (dict of tuples):")
     for title, (rating, genres) in MOVIE_DETAILS.items():
-        print(f"  • {title} → IMDb: {rating}/10 | Genres: {genres}")
+        print(f"  • {title} → {rating}/10 | {genres}")
 
 
-def add_rating(ratings: dict) -> None:
-    """Add a new personal rating (modifies the dict passed in)."""
+def add_rating(ratings_dict: dict):
     title = input("\nEnter movie title: ").strip()
+    if not title:
+        print("Title cannot be empty.")
+        return
+
     while True:
         try:
             rating = float(input("Enter your rating (0.0 - 10.0): "))
@@ -63,29 +65,28 @@ def add_rating(ratings: dict) -> None:
         except ValueError:
             print("Please enter a valid number!")
 
-    ratings[title] = rating
+    ratings_dict[title] = rating
     print(f"✅ Saved: {title} = {rating}/10")
 
 
-def list_personal_ratings(ratings: dict) -> None:
-    """Show all personal ratings."""
-    if not ratings:
+def list_personal_ratings(ratings_dict: dict):
+    if not ratings_dict:
         print("\nYou haven't rated any movies yet.")
         return
 
     print("\n📝 Your Personal Ratings:")
-    for title, rating in ratings.items():
+    for title, rating in ratings_dict.items():
         print(f"  • {title}: {rating}/10")
 
 
-def run_cli() -> None:
-    """Main CLI loop (entry point)."""
+def run_cli():
+    """Main entry point with persistent storage."""
     show_welcome()
 
-    # Personal ratings stored in memory for now (will save to file in next phase)
-    personal_ratings: dict[str, float] = {}
+    # Load saved ratings at startup
+    personal_ratings = load_ratings()
 
-    while True:                                 # main loop
+    while True:
         show_menu()
         choice = input("\nEnter your choice (1-4): ").strip()
 
@@ -96,7 +97,8 @@ def run_cli() -> None:
         elif choice == "3":
             list_personal_ratings(personal_ratings)
         elif choice == "4":
-            print("\n👋 Thank you for using Movie Rating Tool!")
+            save_ratings(personal_ratings)   # ← save before exit
+            print("\n👋 Thank you! Your ratings have been saved.")
             break
         else:
             print("❌ Invalid choice. Please enter 1, 2, 3 or 4.")
