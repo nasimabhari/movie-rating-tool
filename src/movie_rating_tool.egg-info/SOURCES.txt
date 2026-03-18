@@ -4,6 +4,7 @@ src/movie_rating_tool/__init__.py
 src/movie_rating_tool/__main__.py
 src/movie_rating_tool/cli.py
 src/movie_rating_tool/data_loader.py
+src/movie_rating_tool/models.py
 src/movie_rating_tool/rating_engine.py
 src/movie_rating_tool/visualization.py
 src/movie_rating_tool.egg-info/PKG-INFO
